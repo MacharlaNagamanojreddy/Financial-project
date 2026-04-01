@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Northstar Finance
 
-## Getting Started
+A production-style personal finance web app for young professionals. It uses real Supabase authentication and database flows rather than mock data.
 
-First, run the development server:
+## Features
+
+- Email/password sign-up and sign-in with Supabase Auth
+- Dashboard with balance, monthly spending, savings progress, charts, and quick actions
+- Expense tracking with notes, category filters, and transaction history
+- Savings goals with progress tracking and contribution updates
+- Plain-language financial insights
+- A financial wellness score based on spending consistency, savings ratio, and goal progress
+
+## Stack
+
+- Next.js 16
+- React 19
+- Tailwind CSS 4
+- Supabase SSR + Supabase Auth
+- Recharts
+- Zod
+
+## Routes
+
+- `/`
+- `/add-expense`
+- `/transactions`
+- `/goals`
+- `/insights`
+- `/profile`
+- `/login`
+- `/sign-up`
+
+## Local Setup
+
+1. Install dependencies.
+
+```bash
+npm install
+```
+
+2. Copy the example environment file.
+
+```bash
+cp .env.example .env.local
+```
+
+3. Add your Supabase URL and anon key to `.env.local`.
+
+4. Open Supabase SQL Editor and run [`supabase/schema.sql`](./supabase/schema.sql).
+
+5. Start the app.
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6. Visit [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Local Mode
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+If `.env.local` is missing, the app now falls back to a local machine-only mode:
 
-## Learn More
+- sign-up and sign-in still work
+- finance data is stored in `.local-data/finance.json`
+- Supabase remains the primary backend when credentials are configured
 
-To learn more about Next.js, take a look at the following resources:
+## Supabase Schema
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The SQL file creates:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `profiles`
+- `expenses`
+- `goals`
 
-## Deploy on Vercel
+It also sets up:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- a new-user profile trigger
+- row-level security policies
+- an RPC to add expenses and update balance atomically
+- an RPC to increment goal progress atomically
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Scripts
+
+```bash
+npm run dev
+npm run lint
+npm run typecheck
+npm run build
+```
+
+## Node Version
+
+Node 20 or Node 22 is recommended. The current dependency set may emit engine warnings on Node 23 even though the app still installs.
